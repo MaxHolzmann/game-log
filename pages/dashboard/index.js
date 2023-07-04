@@ -34,10 +34,11 @@ export default function Dashboard() {
       <Navbar></Navbar>
       <div className='text-center'>
         <h1>Dashboard</h1>
-        <GameCard></GameCard>
+        <div className="grid grid-cols-3 gap-4 content-center">
         {results.map((result) => (
-          <div>{result.name}</div>
+          <GameCard result={result}></GameCard>
         ))}
+        </div>
       </div>
     </>
   );
