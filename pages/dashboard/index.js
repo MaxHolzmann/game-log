@@ -40,33 +40,34 @@ export default function Dashboard() {
     console.log("search updated! search is now: " + search);
   };
 
-  const addGame = async (e) => {
-    console.log('clicked game')
-    const newGame = {
-      name: "test",
-      image: "test",
-      position: 1,
-      category: "test"
-    }
-  try {
-    const response = await fetch('/api/game', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newGame)
-     })
-     console.log(response)
-  } catch (err) {
-    console.log(error)
-  }
-  }
+  // const addGame = async (e) => {
+  //   console.log("clicked game");
+  //   console.log(e.target);
+  //   const newGame = {
+  //     name: "test",
+  //     image: "test",
+  //     position: 1,
+  //     category: "test",
+  //   };
+  //   try {
+  //     const response = await fetch("/api/game", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(newGame),
+  //     });
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     gameCall();
   }, [search]);
 
-  //TODO : Loading screen for results. 
+  //TODO : Loading screen for results.
 
   return (
     <>
@@ -88,9 +89,7 @@ export default function Dashboard() {
 
         <div className='grid grid-cols-3 gap-4 content-center'>
           {results.map((result) => (
-            <div onClick={addGame}>
             <GameCard result={result}></GameCard>
-            </div>
           ))}
         </div>
       </div>
