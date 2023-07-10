@@ -4,6 +4,9 @@ import Navbar from "../../app/components/Navbar";
 import GameCard from "../../app/components/GameCard";
 
 export default function Dashboard() {
+  const { data: session, status } = useSession();
+  console.log(session);
+  console.log(status);
   const RAWG_KEY = process.env.NEXT_PUBLIC_RAWG_KEY;
 
   const [results, setResults] = useState([]);
@@ -68,6 +71,10 @@ export default function Dashboard() {
   }, [search]);
 
   //TODO : Loading screen for results.
+
+  if (status === "loading") {
+    return <p>Loading!</p>;
+  }
 
   return (
     <>
