@@ -5,6 +5,7 @@ import GameCard from "../../app/components/GameCard";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
+
   console.log(session);
   console.log(status);
   const RAWG_KEY = process.env.NEXT_PUBLIC_RAWG_KEY;
@@ -12,6 +13,8 @@ export default function Dashboard() {
   const [results, setResults] = useState([]);
 
   const [search, setSearch] = useState([]);
+
+  const [usersGames, setGames] = useState([]);
 
   const gameCall = async () => {
     if (search == null || search == undefined || search == "") {
@@ -43,34 +46,70 @@ export default function Dashboard() {
     console.log("search updated! search is now: " + search);
   };
 
-  // const addGame = async (e) => {
-  //   console.log("clicked game");
-  //   console.log(e.target);
-  //   const newGame = {
-  //     name: "test",
-  //     image: "test",
-  //     position: 1,
-  //     category: "test",
-  //   };
-  //   try {
-  //     const response = await fetch("/api/game", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(newGame),
-  //     });
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log(error);
-  //   }
-  // };
+  const addGame = async (e) => {
+
+    const newGame = {
+      name: e.target.parentElement.dataset.name,
+      background_image: e.target.parentElement.dataset.img,
+      position: 1,
+      category: "test",
+      user: session.user.id,
+    };
+
+    for(let i = 0; i < usersGames.length; i++) {
+      if(usersGames[i].name === newGame.name) {
+        console.log('you already have this');
+        return
+      }
+    }
+
+    try {
+      const response = await fetch("/api/game", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newGame),
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(error);
+    }
+  };
+
+  const fetchUsersGames = async () => {
+    if(status === "authenticated") {
+    try {
+      console.log('go!')
+      const response = await fetch("/api/usersgames?id=" + session.user.id, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed with status: " + response.status);
+      }
+      const data = await response.json();
+      setGames(data);
+      console.log(usersGames);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  }
+
+
+  //TODO : Loading screen for results.
+
+  useEffect(() => {
+    fetchUsersGames();
+  }, [session])
 
   useEffect(() => {
     gameCall();
   }, [search]);
-
-  //TODO : Loading screen for results.
 
   if (status === "loading") {
     return <p>Loading!</p>;
@@ -96,7 +135,7 @@ export default function Dashboard() {
 
         <div className='grid grid-cols-3 gap-4 content-center'>
           {results.map((result) => (
-            <GameCard result={result}></GameCard>
+            <GameCard onClick={addGame} result={result}></GameCard>
           ))}
         </div>
       </div>

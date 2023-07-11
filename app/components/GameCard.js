@@ -1,8 +1,18 @@
 // create screenshots slider!?const addGame = async (e) => {
-import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function GameCard({ result }) {
+// take the logic of this out of the component
+//move to seperate component or proper page. 
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useEffect } from "react"
+
+
+
+export default function GameCard({ onClick, result }) {
   const { data: session, status } = useSession();
+
+  const [usersGames, setGames] = useState([])
+  //component this code
+ 
 
   const addGame = async (e) => {
     console.log("clicked game");
@@ -14,6 +24,10 @@ export default function GameCard({ result }) {
       category: "test",
       user: session.user.id,
     };
+
+    //check if user already has game in My Games, if not continue
+
+
     try {
       const response = await fetch("/api/game", {
         method: "POST",
@@ -34,18 +48,18 @@ export default function GameCard({ result }) {
   return (
     <>
       <div
-        onClick={addGame}
         data-img={result.background_image}
         data-name={result.name}
-        className='max-w-sm rounded-lg overflow-hidden shadow-xl'
+        className='max-w-sm rounded-lg overflow-hidden shadow-xl hover:scale-105'
       >
         <div className='text-white bg-orange-500'>{result.name}</div>
         <img
           className='w-full h-48 object-cover'
           src={result.background_image}
         />
-        <button>Add Game</button>
+        <button onClick={onClick}>Add Game</button>
       </div>
     </>
   );
 }
+
