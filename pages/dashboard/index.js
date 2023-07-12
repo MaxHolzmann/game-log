@@ -5,9 +5,7 @@ import GameCard from "../../app/components/GameCard";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
-
-  console.log(session);
-  console.log(status);
+  
   const RAWG_KEY = process.env.NEXT_PUBLIC_RAWG_KEY;
 
   const [results, setResults] = useState([]);
