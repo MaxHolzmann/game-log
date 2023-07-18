@@ -42,20 +42,11 @@ export default function Dashboard() {
     <>
       <Navbar></Navbar>
       <div className='text-center'>
-        <h1>Dashboard</h1>
-
-        <h2>Search Games</h2>
-        <form>
-          <input
-            name='search'
-            placeholder='Search for a game'
-            className='border'
-          ></input>
-        </form>
+        <h1>My Games</h1>
 
         <div className='grid grid-cols-3 gap-4 content-center'>
           {usersGames.map((game) => (
-            <GameCard result={game}></GameCard>
+            <GameCard result={game} onList={true}></GameCard>
           ))}
         </div>
       </div>

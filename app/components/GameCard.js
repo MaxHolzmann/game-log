@@ -7,41 +7,11 @@ import { useState, useEffect } from "react"
 
 
 
-export default function GameCard({ onClick, result }) {
+export default function GameCard({ onClick, result, onList }) {
   const { data: session, status } = useSession();
 
-  const [usersGames, setGames] = useState([])
-  //component this code
- 
-
-  const addGame = async (e) => {
-    console.log("clicked game");
-    console.log(e.target.parentElement.dataset.name);
-    const newGame = {
-      name: e.target.parentElement.dataset.name,
-      background_image: e.target.parentElement.dataset.img,
-      position: 1,
-      category: "test",
-      user: session.user.id,
-    };
-
+  const [usersGames, setGames] = useState([]);
     //check if user already has game in My Games, if not continue
-
-
-    try {
-      const response = await fetch("/api/game", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newGame),
-      });
-      console.log(response);
-    } catch (err) {
-      console.log(error);
-    }
-  };
-
   // add game to User in database.
   // Potentially find a way to update the User's array of games with a reference.
 
@@ -57,7 +27,11 @@ export default function GameCard({ onClick, result }) {
           className='w-full h-48 object-cover'
           src={result.background_image}
         />
+        { onList ? (
+        <button onClick={onClick}>Remove Game</button>) 
+        : 
         <button onClick={onClick}>Add Game</button>
+        }
       </div>
     </>
   );

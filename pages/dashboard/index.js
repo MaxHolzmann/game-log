@@ -29,8 +29,18 @@ export default function Dashboard() {
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
+          const usersGamesNames = usersGames.map((game => game.name))
+          console.log(usersGamesNames)
+          for(let i = 0; i < data.results.length; i++) {
+            if(usersGamesNames.includes(data.results[i].name)) {
+              console.log('match found!')
+              data.results[i].match = true;
+            } else {
+              data.results[i].match = false;
+              console.log('no match found')
+            }
+          }
           setResults(data.results);
-          console.log(results);
         }
       } catch (error) {
         console.error(error);
@@ -103,6 +113,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchUsersGames();
+
   }, [session])
 
   useEffect(() => {
@@ -132,8 +143,9 @@ export default function Dashboard() {
         </form>
 
         <div className='grid grid-cols-3 gap-4 content-center'>
+
           {results.map((result) => (
-            <GameCard onClick={addGame} result={result}></GameCard>
+            <GameCard key={result.id} onList={result.match} onClick={addGame} result={result}></GameCard>
           ))}
         </div>
       </div>
