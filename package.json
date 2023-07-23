@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@atlaskit/css-reset": "^6.5.3",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@next-auth/mongodb-adapter": "^1.1.3",
     "@syncfusion/ej2-react-kanban": "^22.1.38",
     "@tailwindcss/forms": "^0.5.3",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "dotenv": "^16.1.3",
     "eslint": "8.41.0",
     "eslint-config-next": "^12.0.4",
