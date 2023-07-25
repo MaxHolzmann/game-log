@@ -4,6 +4,7 @@ import Navbar from "../app/components/Navbar";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import GameCard from "../app/components/GameCard";
 import { v4 as uuidv4 } from "uuid";
+import { all } from "axios";
 
 const fetchUsersGames = async (userId) => {
   try {
@@ -140,13 +141,19 @@ const DragDropList = ({ initialGamesData }) => {
 
           console.log(allListItems);
 
-          itemsWithUniqueIds.forEach((item) => {
-            const idExitsts = allListItems.some(
-              (listItem) => listItem._id === item._id
+          const results = itemsWithUniqueIds.filter((item) => {
+            // Check if an item with the same name exists in allListItems
+            const itemExists = allListItems.some(
+              (listItem) => listItem.name === item.name
             );
-            if (!idExitsts) {
-              console.log("match!", item);
-            }
+
+            // If the item with the same name does not exist in allListItems, keep it in the results array
+            return !itemExists;
+          });
+
+          // Display the results
+          results.forEach((item) => {
+            console.log("match!", item);
           });
 
           setLists(initialListData[0].list);
