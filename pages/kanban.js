@@ -3,6 +3,7 @@ import { useSession, getSession } from "next-auth/react";
 import Navbar from "../app/components/Navbar";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import GameCard from "../app/components/GameCard";
+import { v4 as uuidv4 } from "uuid";
 
 const fetchUsersGames = async (userId) => {
   try {
@@ -22,6 +23,47 @@ const fetchUsersGames = async (userId) => {
   } catch (err) {
     console.log(err);
     return [];
+  }
+};
+
+const fetchUsersList = async (userId) => {
+  try {
+    const response = await fetch("/api/list/loadlist?id=" + userId, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Request failed with status: " + response.status);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+const saveUsersList = async (userId, list) => {
+  const newList = {
+    userId: userId,
+    list: list,
+  };
+
+  try {
+    const response = await fetch("/api/savelist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newList),
+    });
+    console.log(response);
+  } catch (err) {
+    console.log(error);
   }
 };
 
@@ -63,7 +105,10 @@ const DragDropList = ({ initialGamesData }) => {
         }
         return list;
       });
+
       setLists(updatedLists);
+      console.log(typeof updatedLists);
+      saveUsersList(session.user.id, updatedLists);
     }
   };
 
@@ -72,17 +117,31 @@ const DragDropList = ({ initialGamesData }) => {
       if (status === "authenticated") {
         const initialGamesData = await fetchUsersGames(session.user.id);
 
-        // Set the initial data from the fetched games
-        setLists([
-          {
-            id: "list-1",
-            title: "To Do",
-            items: initialGamesData,
-          },
-          { id: "list-2", title: "In Progress", items: [] },
-          { id: "list-3", title: "Done", items: [] },
-        ]);
+        // Generate unique IDs for each item
+        const itemsWithUniqueIds = initialGamesData.map((item) => ({
+          ...item,
+          _id: uuidv4(),
+        }));
+
+        const initialListData = await fetchUsersList(session.user.id);
+
+        console.log(initialListData);
+
+        if (initialListData.length !== 0) {
+          setLists(initialListData);
+        } else {
+          setLists([
+            {
+              id: "list-1",
+              title: "To Do",
+              items: itemsWithUniqueIds, // Use the items with unique IDs
+            },
+            { id: "list-2", title: "In Progress", items: [] },
+            { id: "list-3", title: "Done", items: [] },
+          ]);
+        }
       }
+      // Set the initial data from the fetched games
     };
 
     fetchData();
@@ -96,30 +155,34 @@ const DragDropList = ({ initialGamesData }) => {
     <>
       <Navbar></Navbar>
       <DragDropContext onDragEnd={onDragEnd}>
-        {lists.map((list, index) => (
-          <div key={list.id}>
-            <h2>{list.title}</h2>
-            <Droppable droppableId={list.id} index={index}>
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{ listStyleType: "none", padding: 0 }}
-                >
-                  {list.items.map(
-                    (
-                      item,
-                      itemIndex // Use map instead of forEach
-                    ) => (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)", // Three columns with equal width
+            gap: "20px", // Add some spacing between the lists
+          }}
+        >
+          {lists.map((list, index) => (
+            <div key={list.id}>
+              <h2>{list.title}</h2>
+              <Droppable droppableId={list.id} index={index}>
+                {(provided) => (
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{ listStyleType: "none", padding: 0 }}
+                  >
+                    {list.items.map((item, itemIndex) => (
                       <Draggable
-                        key={item.id}
-                        draggableId={item._id.toString()}
-                        index={itemIndex} // Use itemIndex instead of index here
+                        key={item._id}
+                        draggableId={item._id}
+                        index={itemIndex}
                       >
                         {(provided) => (
                           <li
                             ref={provided.innerRef}
                             {...provided.draggableProps}
+                            {...provided.dragHandleProps}
                             style={{
                               userSelect: "none",
                               padding: 16,
@@ -130,23 +193,18 @@ const DragDropList = ({ initialGamesData }) => {
                               ...provided.draggableProps.style,
                             }}
                           >
-                            <div
-                              {...provided.dragHandleProps}
-                              data-rbd-drag-handle-draggable-id={item._id.toString()}
-                            >
-                              <GameCard result={item} onList={true}></GameCard>
-                            </div>
+                            <GameCard result={item} onList={true} />
                           </li>
                         )}
                       </Draggable>
-                    )
-                  )}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </div>
-        ))}
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </div>
+          ))}
+        </div>
       </DragDropContext>
     </>
   );

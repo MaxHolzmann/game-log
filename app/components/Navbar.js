@@ -8,6 +8,9 @@ export default function Navbar() {
       <h1>
         <a href='/games'>My Games</a>
       </h1>
+      <h1>
+        <a href='/kanban'>Kanban Test</a>
+      </h1>
     </div>
   );
 }
