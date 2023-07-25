@@ -8,8 +8,9 @@ import { connectMongo } from "../../../db/config/index";
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
+      console.log("loading list of " + req.query.id);
       await connectMongo(process.env.MONGODB_URI);
-      const loadedList = await List.find({ userId: req.body.userId });
+      const loadedList = await List.find({ userId: req.query.id });
       console.log(loadedList);
       res.status(200).json(loadedList);
     } catch (err) {

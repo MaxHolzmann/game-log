@@ -125,10 +125,10 @@ const DragDropList = ({ initialGamesData }) => {
 
         const initialListData = await fetchUsersList(session.user.id);
 
-        console.log(initialListData);
+        console.log(initialListData[0]);
 
         if (initialListData.length !== 0) {
-          setLists(initialListData);
+          setLists(initialListData[0].list);
         } else {
           setLists([
             {
