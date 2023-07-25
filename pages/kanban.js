@@ -107,7 +107,6 @@ const DragDropList = ({ initialGamesData }) => {
       });
 
       setLists(updatedLists);
-      console.log(typeof updatedLists);
       saveUsersList(session.user.id, updatedLists);
     }
   };
@@ -141,7 +140,6 @@ const DragDropList = ({ initialGamesData }) => {
           ]);
         }
       }
-      // Set the initial data from the fetched games
     };
 
     fetchData();
