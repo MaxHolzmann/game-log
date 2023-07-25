@@ -124,9 +124,31 @@ const DragDropList = ({ initialGamesData }) => {
 
         const initialListData = await fetchUsersList(session.user.id);
 
-        console.log(initialListData[0]);
-
         if (initialListData.length !== 0) {
+          // compare items with unique ids to inital list, when no match, add to the first items array
+
+          console.log(itemsWithUniqueIds);
+
+          const allListItems = [];
+
+          for (let i = 0; i < initialListData[0].list.length; i++) {
+            for (let j = 0; j < initialListData[0].list[i].items.length; j++) {
+              let list = initialListData[0].list[i].items[j];
+              allListItems.push(list);
+            }
+          }
+
+          console.log(allListItems);
+
+          itemsWithUniqueIds.forEach((item) => {
+            const idExitsts = allListItems.some(
+              (listItem) => listItem._id === item._id
+            );
+            if (!idExitsts) {
+              console.log("match!", item);
+            }
+          });
+
           setLists(initialListData[0].list);
         } else {
           setLists([
