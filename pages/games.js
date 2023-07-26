@@ -195,11 +195,11 @@ const DragDropList = ({ initialGamesData }) => {
           setLists([
             {
               id: "list-1",
-              title: "To Do",
+              title: "Back Log 📖",
               items: itemsWithUniqueIds, // Use the items with unique IDs
             },
-            { id: "list-2", title: "In Progress", items: [] },
-            { id: "list-3", title: "Done", items: [] },
+            { id: "list-2", title: "Currently Playing 🎮", items: [] },
+            { id: "list-3", title: "Completed 🏆", items: [] },
           ]);
         }
       }
@@ -275,7 +275,6 @@ const DragDropList = ({ initialGamesData }) => {
   );
 };
 
-// Implement getServerSideProps to fetch the data on the server side
 export async function getServerSideProps(context) {
   try {
     const session = await getSession(context);
@@ -290,8 +289,6 @@ export async function getServerSideProps(context) {
     }
 
     const initialGamesData = await fetchUsersGames(session.user.id);
-
-    // Return the data as props so that it can be used in the component
     return {
       props: {
         initialGamesData,
