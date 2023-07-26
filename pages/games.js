@@ -216,22 +216,16 @@ const DragDropList = ({ initialGamesData }) => {
     <>
       <Navbar></Navbar>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)", // Three columns with equal width
-            gap: "20px", // Add some spacing between the lists
-          }}
-        >
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-center bg-slate-100 rounded-2xl m-10'>
           {lists.map((list, index) => (
             <div key={list.id}>
-              <h2>{list.title}</h2>
+              <h2 className='text-2xl mt-5'>{list.title}</h2>
               <Droppable droppableId={list.id} index={index}>
                 {(provided) => (
                   <ul
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    style={{ listStyleType: "none", padding: 0 }}
+                    className='bg-slate-200 m-3 rounded-2xl grid justify-items-center max-h-screen overflow-y-scroll'
                   >
                     {list.items.map((item, itemIndex) => (
                       <Draggable
@@ -245,14 +239,9 @@ const DragDropList = ({ initialGamesData }) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             style={{
-                              userSelect: "none",
-                              padding: 16,
-                              margin: "0 0 8px 0",
-                              minHeight: "50px",
-                              backgroundColor: "#fff",
-                              boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
                               ...provided.draggableProps.style,
                             }}
+                            className='flex justify-center m-4 p-1'
                           >
                             <GameCard
                               onClick={removeGame}
