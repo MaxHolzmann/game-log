@@ -18,16 +18,16 @@ export default function GameCard({ onClick, result, onList }) {
       <div
         data-img={result.background_image}
         data-name={result.name}
-        className='w-sm rounded-lg overflow-hidden shadow-xl hover:scale-105'
+        className='w-sm rounded-lg overflow-hidden shadow-2xl'
       >
-        <div className='text-white bg-orange-500 p-1'>{result.name}</div>
+        <div className='text-white bg-black p-1 text-lg'>{result.name}</div>
         <img className='w-96 h-48 object-cover' src={result.background_image} />
         {onList ? (
-          <button className='w-full bg-white' onClick={onClick}>
+          <button className='w-full bg-black text-white text-lg hover:scale-105' onClick={onClick}>
             Remove Game
           </button>
         ) : (
-          <button onClick={onClick}>Add Game</button>
+          <button className="w-full bg-black text-white text-lg hover:scale-105" onClick={onClick}>Add Game</button>
         )}
       </div>
     </>

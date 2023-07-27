@@ -1,7 +1,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import Navbar from "../../app/components/Navbar";
-import GameCard from "../../app/components/GameCard";
+import Navbar from "../app/components/Navbar";
+import GameCard from "../app/components/GameCard";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -124,16 +124,15 @@ export default function Dashboard() {
     <>
       <Navbar></Navbar>
       <div className='text-center'>
-        <h1>Dashboard</h1>
 
-        <h2>Search Games</h2>
-        <form>
+        <h1 className="text-3xl">Search for games!</h1>
+        <form className="p-6">
           <input
             name='search'
-            placeholder='Search for a game'
-            className='border'
+            placeholder='Enter a game'
+            className='border rounded-xl shadow-md text-2xl p-1'
           ></input>
-          <button onClick={updateSearch} type='submit'>
+          <button className="rounded-xl border bg-orange-500 shadow-md text-white p-1 text-2xl mx-4" onClick={updateSearch} type='submit'>
             Search
           </button>
         </form>

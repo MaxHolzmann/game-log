@@ -4,7 +4,6 @@ import Navbar from "../app/components/Navbar";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import GameCard from "../app/components/GameCard";
 import { v4 as uuidv4 } from "uuid";
-import { all } from "axios";
 
 const fetchUsersGames = async (userId) => {
   try {
