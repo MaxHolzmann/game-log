@@ -124,20 +124,24 @@ export default function Dashboard() {
     <>
       <Navbar></Navbar>
       <div className='text-center'>
-
-        <h1 className="text-3xl">Search for games!</h1>
-        <form className="p-6">
+        <h1 className='text-4xl'>Search for games!</h1>
+        <form className='p-7'>
           <input
             name='search'
             placeholder='Enter a game'
-            className='border rounded-xl shadow-md text-2xl p-1'
+            className='border rounded-xl shadow-md text-xl p-2'
           ></input>
-          <button className="rounded-xl border bg-orange-500 shadow-md text-white p-1 text-2xl mx-4" onClick={updateSearch} type='submit'>
+
+          <button
+            onClick={updateSearch}
+            type='submit'
+            class='mx-4 shadow-md text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:border-orange-500 dark:text-orange-500 dark:hover:text-white dark:hover:bg-orange-500 dark:focus:ring-orange-800'
+          >
             Search
           </button>
         </form>
 
-        <div className='grid grid-cols-3 gap-4 content-center'>
+        <div className='grid grid-cols-3 gap-5 content-center m-5'>
           {results.map((result) => (
             <GameCard
               key={result.id}

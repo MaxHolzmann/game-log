@@ -240,7 +240,7 @@ const DragDropList = ({ initialGamesData }) => {
                             style={{
                               ...provided.draggableProps.style,
                             }}
-                            className='flex justify-center m-4 p-1'
+                            className='flex justify-center m-4 p-1 w-full'
                           >
                             <GameCard
                               onClick={removeGame}
