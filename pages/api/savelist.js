@@ -7,15 +7,6 @@ import { connectMongo } from "../../db/config/index";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    // try {
-    //   await connectMongo(process.env.MONGODB_URI);
-    //   const newList = await List.create(req.body);
-    //   console.log(newGame);
-    //   res.status(200).json(newGame);
-    // } catch (err) {
-    //   console.log(err);
-    //   res.status(500).json(err.body);
-    // }
     let list = await List.findOne({ userId: req.body.userId });
 
     if (list) {

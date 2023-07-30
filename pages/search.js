@@ -9,13 +9,12 @@ export default function Dashboard() {
   const [results, setResults] = useState([]);
   const [search, setSearch] = useState([]);
   const [usersGames, setGames] = useState([]);
-  const [ignored, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [refresh, setRefresh] = useState(0);
 
   const gameCall = async () => {
     if (search == null || search == undefined || search == "") {
       console.log("Search is null, undefined, or empty. Not calling API.");
     } else {
-      console.log("Game Call! Search is: " + search);
       const url =
         "https://api.rawg.io/api/games?key=" +
         RAWG_KEY +
@@ -38,6 +37,7 @@ export default function Dashboard() {
             }
           }
           setResults(data.results);
+          setRefresh(refresh + 1);
         }
       } catch (error) {
         console.error(error);
@@ -46,9 +46,11 @@ export default function Dashboard() {
   };
 
   const updateSearch = (e) => {
-    e.preventDefault();
-    setSearch(e.target.form.search.value);
-    console.log("search updated! search is now: " + search);
+    if (e) {
+      e.preventDefault();
+    }
+    setSearch(document.getElementById("search").value);
+    setRefresh(refresh + 1);
   };
 
   const addGame = async (e) => {
@@ -62,7 +64,8 @@ export default function Dashboard() {
 
     for (let i = 0; i < usersGames.length; i++) {
       if (usersGames[i].name === newGame.name) {
-        console.log("you already have this");
+        // console.log("you already have this");
+        setRefresh(refresh + 1);
         return;
       }
     }
@@ -75,10 +78,11 @@ export default function Dashboard() {
         },
         body: JSON.stringify(newGame),
       });
-      console.log(response);
-      forceUpdate();
+      setRefresh(refresh + 1);
+      await gameCall();
+      await updateSearch();
     } catch (err) {
-      console.log(error);
+      console.log(err);
     }
   };
 
@@ -98,7 +102,7 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setGames(data);
-        console.log(usersGames);
+        setRefresh(refresh + 1);
       } catch (err) {
         console.log(err);
       }
@@ -110,7 +114,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchUsersGames();
-  }, [session, ignored]);
+    gameCall();
+  }, [session, search]);
 
   useEffect(() => {
     gameCall();
@@ -128,6 +133,7 @@ export default function Dashboard() {
           <h1 className='text-5xl pt-3'>Search for games!</h1>
           <form className='p-7'>
             <input
+              id='search'
               name='search'
               placeholder='Enter a game'
               className='border rounded-xl shadow-md text-xl p-2'
@@ -142,10 +148,11 @@ export default function Dashboard() {
             </button>
           </form>
 
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5 bg-gray-200'>
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
             {results.map((result) => (
               <GameCard
                 key={result.id}
+                refresh={refresh}
                 onList={result.match}
                 onClick={addGame}
                 result={result}

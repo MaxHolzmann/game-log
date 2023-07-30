@@ -5,7 +5,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 
-export default function GameCard({ onClick, result, onList }) {
+export default function GameCard({ onClick, result, onList, refresh }) {
   const { data: session, status } = useSession();
 
   const [usersGames, setGames] = useState([]);
