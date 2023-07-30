@@ -224,7 +224,7 @@ const DragDropList = ({ initialGamesData }) => {
                   <ul
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className='bg-slate-200 m-3 rounded-2xl grid justify-items-center max-h-screen overflow-y-scroll'
+                    className='bg-slate-200 m-3 rounded-2xl grid xl:grid-cols-2 justify-items-center max-h-screen overflow-y-scroll'
                   >
                     {list.items.map((item, itemIndex) => (
                       <Draggable
@@ -240,7 +240,7 @@ const DragDropList = ({ initialGamesData }) => {
                             style={{
                               ...provided.draggableProps.style,
                             }}
-                            className='flex justify-center m-4 p-1 w-full'
+                            className='flex justify-center m-4 p-1'
                           >
                             <GameCard
                               onClick={removeGame}
@@ -263,6 +263,7 @@ const DragDropList = ({ initialGamesData }) => {
   );
 };
 
+// grab session data on server side, and fetch the users' games to compare to the "list" data that matches the users'
 export async function getServerSideProps(context) {
   try {
     const session = await getSession(context);

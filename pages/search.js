@@ -123,33 +123,35 @@ export default function Dashboard() {
   return (
     <>
       <Navbar></Navbar>
-      <div className='text-center'>
-        <h1 className='text-4xl'>Search for games!</h1>
-        <form className='p-7'>
-          <input
-            name='search'
-            placeholder='Enter a game'
-            className='border rounded-xl shadow-md text-xl p-2'
-          ></input>
+      <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+        <div className='text-center'>
+          <h1 className='text-5xl pt-3'>Search for games!</h1>
+          <form className='p-7'>
+            <input
+              name='search'
+              placeholder='Enter a game'
+              className='border rounded-xl shadow-md text-xl p-2'
+            ></input>
 
-          <button
-            onClick={updateSearch}
-            type='submit'
-            class='mx-4 shadow-md text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:border-orange-500 dark:text-orange-500 dark:hover:text-white dark:hover:bg-orange-500 dark:focus:ring-orange-800'
-          >
-            Search
-          </button>
-        </form>
+            <button
+              onClick={updateSearch}
+              type='submit'
+              class='mx-4 shadow-md text-orange-500 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800'
+            >
+              Search
+            </button>
+          </form>
 
-        <div className='grid grid-cols-3 gap-5 content-center m-5'>
-          {results.map((result) => (
-            <GameCard
-              key={result.id}
-              onList={result.match}
-              onClick={addGame}
-              result={result}
-            ></GameCard>
-          ))}
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5 bg-gray-200'>
+            {results.map((result) => (
+              <GameCard
+                key={result.id}
+                onList={result.match}
+                onClick={addGame}
+                result={result}
+              ></GameCard>
+            ))}
+          </div>
         </div>
       </div>
     </>
