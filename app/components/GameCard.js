@@ -39,7 +39,7 @@ export default function GameCard({ onClick, result, onList, refresh }) {
               </button>
             ) : (
               <button
-                className='w-full rounded-lg bg-green-600 text-white text-lg hover:scale-105 duration-100'
+                className='py-1 px-2 rounded-lg bg-green-600 text-white text-lg hover:scale-105 duration-100'
                 onClick={onClick}
               >
                 Add Game
