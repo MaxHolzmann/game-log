@@ -4,48 +4,8 @@ import Navbar from "../app/components/Navbar";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import GameCard from "../app/components/GameCard";
 import { v4 as uuidv4 } from "uuid";
-
-const fetchUsersGames = async (userId) => {
-  try {
-    const response = await fetch("/api/usersgames?id=" + userId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Request failed with status: " + response.status);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
-
-const fetchUsersList = async (userId) => {
-  try {
-    const response = await fetch("/api/list/loadlist?id=" + userId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Request failed with status: " + response.status);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
+import fetchUsersGames from "../app/utils/fetchUsersGames";
+import fetchUsersList from "../app/utils/fetchUsersList";
 
 const saveUsersList = async (userId, list) => {
   const newList = {

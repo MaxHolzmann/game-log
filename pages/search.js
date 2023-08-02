@@ -2,6 +2,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Navbar from "../app/components/Navbar";
 import GameCard from "../app/components/GameCard";
+import fetchUsersGames from "../app/utils/fetchUsersGames";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -136,7 +137,7 @@ export default function Dashboard() {
               id='search'
               name='search'
               placeholder='Enter a game'
-              className='border rounded-xl shadow-md text-xl p-2'
+              className='border focus:outline-1 rounded-xl shadow-md text-xl p-2'
             ></input>
 
             <button
