@@ -21,9 +21,9 @@ const saveUsersList = async (userId, list) => {
       },
       body: JSON.stringify(newList),
     });
-    console.log(response);
+    return response;
   } catch (err) {
-    console.log(error);
+    return err;
   }
 };
 
@@ -78,8 +78,6 @@ const DragDropList = ({ initialGamesData }) => {
       for (let j = 0; j < lists[i].items.length; j++) {
         if (gameName === lists[i].items[j].name) {
           lists[i].items.splice(j, 1);
-          console.log(gameName);
-          console.log(lists[i].items);
 
           try {
             const response = await fetch("/api/removegame", {
@@ -89,10 +87,7 @@ const DragDropList = ({ initialGamesData }) => {
               },
               body: JSON.stringify({ name: gameName }),
             });
-            console.log(response);
-          } catch (err) {
-            console.log(err);
-          }
+          } catch (err) {}
 
           setLists(lists);
           saveUsersList(session.user.id, lists);
@@ -117,9 +112,6 @@ const DragDropList = ({ initialGamesData }) => {
 
         if (initialListData.length !== 0) {
           // compare items with unique ids to inital list, when no match, add to the first items array
-
-          console.log(itemsWithUniqueIds);
-
           const allListItems = [];
 
           for (let i = 0; i < initialListData[0].list.length; i++) {
@@ -128,9 +120,6 @@ const DragDropList = ({ initialGamesData }) => {
               allListItems.push(list);
             }
           }
-
-          console.log(allListItems);
-
           const results = itemsWithUniqueIds.filter((item) => {
             // Check if an item with the same name exists in allListItems
             const itemExists = allListItems.some(
@@ -143,11 +132,8 @@ const DragDropList = ({ initialGamesData }) => {
 
           // Display the results
           results.forEach((item) => {
-            console.log("match!", item);
             initialListData[0].list[0].items.push(item);
           });
-
-          console.log(initialListData[0].list);
 
           setLists(initialListData[0].list);
         } else {

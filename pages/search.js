@@ -1,4 +1,4 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn, signOut, getSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Navbar from "../app/components/Navbar";
 import GameCard from "../app/components/GameCard";
@@ -10,7 +10,6 @@ export default function Dashboard() {
   const [results, setResults] = useState([]);
   const [search, setSearch] = useState([]);
   const [usersGames, setGames] = useState([]);
-  const [refresh, setRefresh] = useState(0);
 
   const gameCall = async () => {
     if (search == null || search == undefined || search == "") {
@@ -38,7 +37,6 @@ export default function Dashboard() {
             }
           }
           setResults(data.results);
-          setRefresh(refresh + 1);
         }
       } catch (error) {
         console.error(error);
@@ -51,7 +49,6 @@ export default function Dashboard() {
       e.preventDefault();
     }
     setSearch(document.getElementById("search").value);
-    setRefresh(refresh + 1);
   };
 
   const addGame = async (e) => {
@@ -66,7 +63,6 @@ export default function Dashboard() {
     for (let i = 0; i < usersGames.length; i++) {
       if (usersGames[i].name === newGame.name) {
         // console.log("you already have this");
-        setRefresh(refresh + 1);
         return;
       }
     }
@@ -79,7 +75,6 @@ export default function Dashboard() {
         },
         body: JSON.stringify(newGame),
       });
-      setRefresh(refresh + 1);
       await gameCall();
       await updateSearch();
     } catch (err) {
@@ -90,7 +85,6 @@ export default function Dashboard() {
   const fetchUsersGames = async () => {
     if (status === "authenticated") {
       try {
-        console.log("go!");
         const response = await fetch("/api/usersgames?id=" + session.user.id, {
           method: "GET",
           headers: {
@@ -103,24 +97,16 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setGames(data);
-        setRefresh(refresh + 1);
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  //TODO : Loading screen for results.
-  // update to "remove game" when a game is added, update state??
-
   useEffect(() => {
     fetchUsersGames();
     gameCall();
   }, [session, search]);
-
-  useEffect(() => {
-    gameCall();
-  }, [search]);
 
   if (status === "loading") {
     return <p>Loading!</p>;
@@ -153,7 +139,6 @@ export default function Dashboard() {
             {results.map((result) => (
               <GameCard
                 key={result.id}
-                refresh={refresh}
                 onList={result.match}
                 onClick={addGame}
                 result={result}
@@ -164,4 +149,19 @@ export default function Dashboard() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
 }

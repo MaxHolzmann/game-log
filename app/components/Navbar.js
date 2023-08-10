@@ -23,7 +23,11 @@ export default function Navbar() {
             </a>
           </h1>
           <h1>
-            <a className='hover:text-slate-500' onClick={() => signOut()}>
+            <a
+              className='hover:text-slate-500'
+              href='#'
+              onClick={() => signOut()}
+            >
               Sign Out
             </a>
           </h1>
