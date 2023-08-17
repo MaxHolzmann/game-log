@@ -3,12 +3,18 @@ import { useSession, getSession, signIn, signOut } from "next-auth/react";
 export default function Navbar() {
   const { data: session } = useSession();
 
+  /* 
+  IDEAS TO BETTER NAVBAR DESIGN
+  logo in left corner to homepage?
+  different font
+  */
+
   return (
-    <div className=' text-center flex justify-end gap-6 text-black text-xl p-1 px-3'>
+    <div className='text-center font-semibold flex justify-center gap-6 text-slate-600 text-lg p-2 px-3'>
       {session ? (
         <>
           <h1>
-            <a className='hover:text-slate-500' href='/games'>
+            <a className='' href='/games'>
               My Games
             </a>
           </h1>

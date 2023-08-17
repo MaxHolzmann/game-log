@@ -10,8 +10,12 @@ export default function Dashboard() {
   const [results, setResults] = useState([]);
   const [search, setSearch] = useState([]);
   const [usersGames, setGames] = useState([]);
+  const [notUserGame, setNotUserGame] = useState([]);
 
   const gameCall = async () => {
+    await fetchUsersGames();
+
+
     if (search == null || search == undefined || search == "") {
       console.log("Search is null, undefined, or empty. Not calling API.");
     } else {
@@ -26,16 +30,16 @@ export default function Dashboard() {
         if (response.ok) {
           const data = await response.json();
           const usersGamesNames = usersGames.map((game) => game.name);
-          console.log(usersGamesNames);
           for (let i = 0; i < data.results.length; i++) {
             if (usersGamesNames.includes(data.results[i].name)) {
               console.log("match found!");
-              data.results[i].match = true;
+              data.results[i].match = true; // use state here instead
             } else {
               data.results[i].match = false;
               console.log("no match found");
             }
           }
+          console.log('gamecall ending', data.results)
           setResults(data.results);
         }
       } catch (error) {
@@ -45,13 +49,16 @@ export default function Dashboard() {
   };
 
   const updateSearch = (e) => {
+    console.log('updated search started')
     if (e) {
       e.preventDefault();
     }
     setSearch(document.getElementById("search").value);
+    console.log('search ending', document.getElementById("search").value)
   };
 
   const addGame = async (e) => {
+
     const newGame = {
       name: e.target.parentElement.dataset.name,
       background_image: e.target.parentElement.dataset.img,
@@ -75,14 +82,19 @@ export default function Dashboard() {
         },
         body: JSON.stringify(newGame),
       });
+      console.log("added game:", response)
       await gameCall();
       await updateSearch();
     } catch (err) {
       console.log(err);
     }
+
   };
 
+
+
   const fetchUsersGames = async () => {
+    console.log('fetching user games started')
     if (status === "authenticated") {
       try {
         const response = await fetch("/api/usersgames?id=" + session.user.id, {
@@ -97,6 +109,7 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setGames(data);
+        console.log('fetch ending,', data)
       } catch (err) {
         console.log(err);
       }
@@ -107,6 +120,11 @@ export default function Dashboard() {
     fetchUsersGames();
     gameCall();
   }, [session, search]);
+
+  useEffect(() => {
+    fetchUsersGames();
+    updateSearch();
+  }, [results])
 
   if (status === "loading") {
     return <p>Loading!</p>;
@@ -137,12 +155,19 @@ export default function Dashboard() {
 
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
             {results.map((result) => (
-              <GameCard
+
+              result.match === true ? (<GameCard
                 key={result.id}
-                onList={result.match}
+                onList={true}
                 onClick={addGame}
                 result={result}
-              ></GameCard>
+              ></GameCard>) : (<GameCard
+                key={result.id}
+                onList={false}
+                onClick={addGame}
+                result={result}
+              ></GameCard>)
+
             ))}
           </div>
         </div>
