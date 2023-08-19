@@ -1,6 +1,4 @@
-import { getProviders, signIn } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]";
+import { signIn, getCsrfToken, getProviders } from "next-auth/react";
 
 export default function SignIn({ providers }) {
   return (
@@ -95,16 +93,12 @@ export default function SignIn({ providers }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (session) {
-    return { redirect: { destination: "/" } };
-  }
-
   const providers = await getProviders();
-
-  console.log(providers);
-
+  const csrfToken = await getCsrfToken(context);
   return {
-    props: { providers: providers ?? [] },
+    props: {
+      providers,
+      csrfToken,
+    },
   };
 }
