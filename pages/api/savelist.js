@@ -11,6 +11,7 @@ export default async function handler(req, res) {
           { userId: req.body.userId },
           { list: req.body.list }
         );
+        res.status(200).json(list);
       } else {
         list = await List.create({
           userId: req.body.userId,
