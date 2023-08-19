@@ -1,5 +1,5 @@
-import Game from "../../db/models/Game.js";
-import { connectMongo } from "../../db/config/index";
+import Game from "../../../db/models/Game";
+import { connectMongo } from "../../../db/config/index";
 
 //add auth middleware
 
