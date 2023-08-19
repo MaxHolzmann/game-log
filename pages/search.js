@@ -13,9 +13,6 @@ export default function Dashboard() {
   const [notUserGame, setNotUserGame] = useState([]);
 
   const gameCall = async () => {
-    await fetchUsersGames();
-
-
     if (search == null || search == undefined || search == "") {
       console.log("Search is null, undefined, or empty. Not calling API.");
     } else {
@@ -39,7 +36,7 @@ export default function Dashboard() {
               console.log("no match found");
             }
           }
-          console.log('gamecall ending', data.results)
+          console.log("gamecall ending", data.results);
           setResults(data.results);
         }
       } catch (error) {
@@ -49,16 +46,16 @@ export default function Dashboard() {
   };
 
   const updateSearch = (e) => {
-    console.log('updated search started')
+    console.log("updated search started");
     if (e) {
       e.preventDefault();
     }
     setSearch(document.getElementById("search").value);
-    console.log('search ending', document.getElementById("search").value)
+    console.log("search ending", document.getElementById("search").value);
   };
 
   const addGame = async (e) => {
-
+    console.log("clicked!");
     const newGame = {
       name: e.target.parentElement.dataset.name,
       background_image: e.target.parentElement.dataset.img,
@@ -82,19 +79,16 @@ export default function Dashboard() {
         },
         body: JSON.stringify(newGame),
       });
-      console.log("added game:", response)
+      console.log("added game:", response);
       await gameCall();
       await updateSearch();
     } catch (err) {
       console.log(err);
     }
-
   };
 
-
-
   const fetchUsersGames = async () => {
-    console.log('fetching user games started')
+    console.log("fetching user games started");
     if (status === "authenticated") {
       try {
         const response = await fetch("/api/usersgames?id=" + session.user.id, {
@@ -109,7 +103,7 @@ export default function Dashboard() {
         }
         const data = await response.json();
         setGames(data);
-        console.log('fetch ending,', data)
+        console.log("fetch ending,", data);
       } catch (err) {
         console.log(err);
       }
@@ -124,7 +118,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchUsersGames();
     updateSearch();
-  }, [results])
+  }, [results]);
 
   if (status === "loading") {
     return <p>Loading!</p>;
@@ -154,21 +148,23 @@ export default function Dashboard() {
           </form>
 
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
-            {results.map((result) => (
-
-              result.match === true ? (<GameCard
-                key={result.id}
-                onList={true}
-                onClick={addGame}
-                result={result}
-              ></GameCard>) : (<GameCard
-                key={result.id}
-                onList={false}
-                onClick={addGame}
-                result={result}
-              ></GameCard>)
-
-            ))}
+            {results.map((result) =>
+              result.match === true ? (
+                <GameCard
+                  key={result.id}
+                  onList={true}
+                  listFunction={addGame}
+                  result={result}
+                ></GameCard>
+              ) : (
+                <GameCard
+                  key={result.id}
+                  onList={false}
+                  listFunction={addGame}
+                  result={result}
+                ></GameCard>
+              )
+            )}
           </div>
         </div>
       </div>

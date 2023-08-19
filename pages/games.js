@@ -189,9 +189,10 @@ const DragDropList = ({ initialGamesData }) => {
                             className='flex justify-center m-4 p-1'
                           >
                             <GameCard
-                              onClick={removeGame}
+                              listFunction={removeGame}
                               result={item}
                               onList={true}
+                              remove={true}
                             />
                           </li>
                         )}

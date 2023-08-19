@@ -1,17 +1,22 @@
-// create screenshots slider!?const addGame = async (e) => {
-
-// take the logic of this out of the component
-//move to seperate component or proper page.
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 
-export default function GameCard({ onClick, result, onList, refresh }) {
-  const { data: session, status } = useSession();
+export default function GameCard({ listFunction, result, onList, remove }) {
+  let [match, setMatch] = useState(result.match);
 
-  const [usersGames, setGames] = useState([]);
-  //check if user already has game in My Games, if not continue
-  // add game to User in database.
-  // Potentially find a way to update the User's array of games with a reference.
+  if (!remove) {
+    onList = match;
+  } else {
+    onList = true;
+  }
+
+  const handleClick = (e) => {
+    listFunction(e);
+    if (match === true) {
+      setMatch(false);
+    } else {
+      setMatch(true);
+    }
+  };
 
   return (
     <>
@@ -30,17 +35,17 @@ export default function GameCard({ onClick, result, onList, refresh }) {
             data-name={result.name}
             className='mt-auto'
           >
-            {onList ? (
+            {onList === true ? (
               <button
                 className='py-1 px-2 rounded-lg bg-red-600 text-white text-lg hover:scale-105 duration-100'
-                onClick={onClick}
+                onClick={handleClick}
               >
                 Remove Game
               </button>
             ) : (
               <button
                 className='py-1 px-2 rounded-lg bg-green-600 text-white text-lg hover:scale-105 duration-100'
-                onClick={onClick}
+                onClick={handleClick}
               >
                 Add Game
               </button>
