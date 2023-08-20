@@ -1,6 +1,13 @@
 import { signIn, getCsrfToken, getProviders } from "next-auth/react";
+import { useState, useEffect } from "react";
 
-export default function SignIn({ providers }) {
+export default function SignIn() {
+  const [providers, setProviders] = useState([]);
+
+  useEffect(async () => {
+    setProviders(await getProviders());
+  }, []);
+
   return (
     <>
       <div className='flex justify-center my-40 mx-5'>
@@ -44,7 +51,9 @@ export default function SignIn({ providers }) {
                 <>
                   <div className='px-6 sm:px-0 max-w-sm'>
                     <button
-                      onClick={() => signIn(provider.id)}
+                      onClick={() =>
+                        signIn(provider.id, { callbackUrl: "/games" })
+                      }
                       type='button'
                       className='text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2'
                     >
@@ -92,13 +101,13 @@ export default function SignIn({ providers }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const providers = await getProviders();
-  const csrfToken = await getCsrfToken(context);
-  return {
-    props: {
-      providers,
-      csrfToken,
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const providers = await getProviders();
+//   const csrfToken = await getCsrfToken(context);
+//   return {
+//     props: {
+//       providers,
+//       csrfToken,
+//     },
+//   };
+// }
