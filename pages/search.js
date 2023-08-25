@@ -26,14 +26,14 @@ export default function Dashboard() {
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
+
+          //map through games already on users list to see if any results are on their list already
           const usersGamesNames = usersGames.map((game) => game.name);
           for (let i = 0; i < data.results.length; i++) {
             if (usersGamesNames.includes(data.results[i].name)) {
-              console.log("match found!");
-              data.results[i].match = true; // use state here instead
+              data.results[i].match = true;
             } else {
               data.results[i].match = false;
-              console.log("no match found");
             }
           }
           console.log("gamecall ending", data.results);
@@ -55,7 +55,6 @@ export default function Dashboard() {
   };
 
   const addGame = async (e) => {
-    console.log("clicked!");
     const newGame = {
       name: e.target.parentElement.dataset.name,
       background_image: e.target.parentElement.dataset.img,
@@ -63,14 +62,13 @@ export default function Dashboard() {
       category: "test",
       user: session.user.id,
     };
-
+    //is this the most efficient way I can do this? look into
     for (let i = 0; i < usersGames.length; i++) {
       if (usersGames[i].name === newGame.name) {
-        // console.log("you already have this");
+        console.log('already on list')
         return;
       }
     }
-
     try {
       const response = await fetch("/api/game", {
         method: "POST",
@@ -80,15 +78,13 @@ export default function Dashboard() {
         body: JSON.stringify(newGame),
       });
       console.log("added game:", response);
-      await gameCall();
-      await updateSearch();
+      await fetchUsersGames();
     } catch (err) {
       console.log(err);
     }
   };
 
   const fetchUsersGames = async () => {
-    console.log("fetching user games started");
     if (status === "authenticated") {
       try {
         const response = await fetch("/api/usersgames?id=" + session.user.id, {
@@ -101,9 +97,9 @@ export default function Dashboard() {
         if (!response.ok) {
           throw new Error("Request failed with status: " + response.status);
         }
+
         const data = await response.json();
         setGames(data);
-        console.log("fetch ending,", data);
       } catch (err) {
         console.log(err);
       }
@@ -153,7 +149,7 @@ export default function Dashboard() {
                 <GameCard
                   key={result.id}
                   onList={true}
-                  listFunction={addGame}
+                  listFunction={() => { console.log('Remove game clicked on search screen') }}
                   result={result}
                 ></GameCard>
               ) : (
@@ -167,7 +163,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
