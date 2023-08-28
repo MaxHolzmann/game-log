@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
-import removeGame from "../app/utils/removeGame";
 
 // const saveUsersList = async (userId, list) => {
 //   const newList = {
@@ -73,31 +72,32 @@ const DragDropList = ({ initialGamesData }) => {
     }
   };
 
-  // const removeGame = async (e) => {
-  //   const gameName = e.target.parentElement.dataset.name;
+  //update list state
+  const removeGameList = async (e) => {
+    const gameName = e.target.parentElement.dataset.name;
 
-  //   for (let i = 0; i < lists.length; i++) {
-  //     for (let j = 0; j < lists[i].items.length; j++) {
-  //       if (gameName === lists[i].items[j].name) {
-  //         lists[i].items.splice(j, 1);
+    for (let i = 0; i < lists.length; i++) {
+      for (let j = 0; j < lists[i].items.length; j++) {
+        if (gameName === lists[i].items[j].name) {
+          lists[i].items.splice(j, 1);
 
-  //         try {
-  //           const response = await fetch("/api/removegame", {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({ name: gameName }),
-  //           });
-  //         } catch (err) { }
+          // try {
+          //   const response = await fetch("/api/removegame", {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({ name: gameName }),
+          //   });
+          // } catch (err) { }
 
-  //         setLists(lists);
-  //         saveUsersLists(session.user.id, lists);
-  //         forceUpdate();
-  //       }
-  //     }
-  //   }
-  // };
+          setLists(lists);
+          // saveUsersLists(session.user.id, lists);
+          // forceUpdate();
+        }
+      }
+    }
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -159,6 +159,8 @@ const DragDropList = ({ initialGamesData }) => {
     return <p>Loading!</p>;
   }
 
+  // current issue is listState. i was trying to update it on the component but thats not going to work.
+
   return (
     <>
       <Navbar></Navbar>
@@ -191,7 +193,10 @@ const DragDropList = ({ initialGamesData }) => {
                             className='flex justify-center m-4 p-1'
                           >
                             <GameCard
-                              listFunction={removeGame(lists, session)}
+
+                              session={session}
+                              list={lists}
+                              setLists={setLists}
                               result={item}
                               onList={true}
                               remove={true}

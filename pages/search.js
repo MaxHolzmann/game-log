@@ -149,6 +149,7 @@ export default function Dashboard() {
                 <GameCard
                   key={result.id}
                   onList={true}
+                  remove={true}
                   listFunction={() => { console.log('Remove game clicked on search screen') }}
                   result={result}
                 ></GameCard>
@@ -156,6 +157,7 @@ export default function Dashboard() {
                 <GameCard
                   key={result.id}
                   onList={false}
+                  add={true}
                   listFunction={addGame}
                   result={result}
                 ></GameCard>
