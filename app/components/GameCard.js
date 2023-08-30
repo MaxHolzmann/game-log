@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import removeGame from "../utils/removeGame";
+import addGame from "../utils/addGame";
 
-export default function GameCard({ session, listFunction, result, onList, add, remove, list, setLists }) {
+//GameCard does not need to handle List State.
+
+export default function GameCard({ session, listFunction, result, onList, add, remove, usersGames, list }) {
   let [match, setMatch] = useState(result.match);
 
   if (!remove) {
@@ -13,16 +16,12 @@ export default function GameCard({ session, listFunction, result, onList, add, r
   const handleClick = async (e) => {
 
     if (remove === true) {
-      console.log("remove logic is running")
-      // listFunction(e);
-      // removeGame(e, list, setLists, session)
-      const newList = await removeGame(e, list, setLists, session)
-      console.log(newList)
-      await setLists(newList)
+      const newList = await removeGame(e, list, session)
+      console.log("new List", newList)
     }
 
     if (add === true) {
-      listFunction(e); // replace this entire concept with function imported
+      addGame(e, usersGames, session)
       console.log('add logic is running')
     }
 

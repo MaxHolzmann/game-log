@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useSession, getSession } from "next-auth/react";
 import Navbar from "../app/components/Navbar";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -8,30 +9,16 @@ import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
 
-// const saveUsersList = async (userId, list) => {
-//   const newList = {
-//     userId: userId,
-//     list: list,
-//   };
-
-//   try {
-//     const response = await fetch("/api/savelist", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(newList),
-//     });
-//     return response;
-//   } catch (err) {
-//     return err;
-//   }
-// };
+/* FEATURE IDEAS FOR GAMES PAGE
+Custom lists, more than 3 lists
+Set default list for new games
+Add games to lists from search page (search page feature)
+*/
 
 const DragDropList = ({ initialGamesData }) => {
   const { data: session, status } = useSession();
-  const [lists, setLists] = React.useState([]);
-  const [ignored, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [lists, setLists] = useState([]);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -80,86 +67,75 @@ const DragDropList = ({ initialGamesData }) => {
       for (let j = 0; j < lists[i].items.length; j++) {
         if (gameName === lists[i].items[j].name) {
           lists[i].items.splice(j, 1);
-
-          // try {
-          //   const response = await fetch("/api/removegame", {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ name: gameName }),
-          //   });
-          // } catch (err) { }
-
           setLists(lists);
-          // saveUsersLists(session.user.id, lists);
-          // forceUpdate();
         }
+      }
+    }
+
+    await fetchData();
+    forceUpdate();
+
+    //insert some type of removed game animation here. perhaps a modal in the bottom left corner?
+  };
+
+  const fetchData = async () => {
+    if (status === "authenticated") {
+      const initialGamesData = await fetchUsersGames(session.user.id);
+
+      // Generate unique IDs for each item
+      const itemsWithUniqueIds = initialGamesData.map((item) => ({
+        ...item,
+        _id: uuidv4(),
+      }));
+
+      const initialListData = await fetchUsersList(session.user.id);
+
+      if (initialListData.length !== 0) {
+        // compare items with unique ids to inital list, when no match, add to the first items array
+        const allListItems = [];
+
+        for (let i = 0; i < initialListData[0].list.length; i++) {
+          for (let j = 0; j < initialListData[0].list[i].items.length; j++) {
+            let list = initialListData[0].list[i].items[j];
+            allListItems.push(list);
+          }
+        }
+        const results = itemsWithUniqueIds.filter((item) => {
+          // Check if an item with the same name exists in allListItems
+          const itemExists = allListItems.some(
+            (listItem) => listItem.name === item.name
+          );
+
+          // If the item with the same name does not exist in allListItems, keep it in the results array
+          return !itemExists;
+        });
+
+        // Display the results
+        results.forEach((item) => {
+          initialListData[0].list[0].items.push(item);
+        });
+        setLists(initialListData[0].list);
+      } else {
+        setLists([
+          {
+            id: "list-1",
+            title: "Back Log 📖",
+            items: itemsWithUniqueIds, // Use the items with unique IDs
+          },
+          { id: "list-2", title: "Currently Playing 🎮", items: [] },
+          { id: "list-3", title: "Completed 🏆", items: [] },
+        ]);
       }
     }
   };
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      if (status === "authenticated") {
-        const initialGamesData = await fetchUsersGames(session.user.id);
-
-        // Generate unique IDs for each item
-        const itemsWithUniqueIds = initialGamesData.map((item) => ({
-          ...item,
-          _id: uuidv4(),
-        }));
-
-        const initialListData = await fetchUsersList(session.user.id);
-
-        if (initialListData.length !== 0) {
-          // compare items with unique ids to inital list, when no match, add to the first items array
-          const allListItems = [];
-
-          for (let i = 0; i < initialListData[0].list.length; i++) {
-            for (let j = 0; j < initialListData[0].list[i].items.length; j++) {
-              let list = initialListData[0].list[i].items[j];
-              allListItems.push(list);
-            }
-          }
-          const results = itemsWithUniqueIds.filter((item) => {
-            // Check if an item with the same name exists in allListItems
-            const itemExists = allListItems.some(
-              (listItem) => listItem.name === item.name
-            );
-
-            // If the item with the same name does not exist in allListItems, keep it in the results array
-            return !itemExists;
-          });
-
-          // Display the results
-          results.forEach((item) => {
-            initialListData[0].list[0].items.push(item);
-          });
-
-          setLists(initialListData[0].list);
-        } else {
-          setLists([
-            {
-              id: "list-1",
-              title: "Back Log 📖",
-              items: itemsWithUniqueIds, // Use the items with unique IDs
-            },
-            { id: "list-2", title: "Currently Playing 🎮", items: [] },
-            { id: "list-3", title: "Completed 🏆", items: [] },
-          ]);
-        }
-      }
-    };
-
+  useEffect(() => {
     fetchData();
-  }, [session, status]);
+  }, [session, status, ignored]);
 
   if (status === "loading") {
     return <p>Loading!</p>;
   }
-
-  // current issue is listState. i was trying to update it on the component but thats not going to work.
 
   return (
     <>
@@ -191,9 +167,9 @@ const DragDropList = ({ initialGamesData }) => {
                               ...provided.draggableProps.style,
                             }}
                             className='flex justify-center m-4 p-1'
+                            onClick={removeGameList}
                           >
                             <GameCard
-
                               session={session}
                               list={lists}
                               setLists={setLists}

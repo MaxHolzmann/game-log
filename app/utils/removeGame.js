@@ -1,12 +1,12 @@
 // import fetchUsersGames from "../app/utils/fetchUsersGames";
-// import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "./saveUsersLists";
 
 //modularizing removeGame to be used in multiple files
-const removeGame = async (e, listDisplay, setLists, session) => {
+const removeGame = async (e, listDisplay, session) => {
     console.log('removeGame is running')
-    // const userList = await fetchUsersList(session.user.id);
     const gameName = e.target?.parentElement.dataset.name;
+
+    // lets check if coming from search page and treat it slightly different if it is. we don't need to loop through lists, just use the fetchUserGames similar to how the search finds matches for the GameCard state.
 
     for (let i = 0; i < listDisplay.length; i++) {
         for (let j = 0; j < listDisplay[i].items.length; j++) {

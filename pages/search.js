@@ -54,6 +54,11 @@ export default function Dashboard() {
     console.log("search ending", document.getElementById("search").value);
   };
 
+  const handleClick = (e) => {
+    console.log(e.target)
+    console.log('click')
+  }
+
   const addGame = async (e) => {
     const newGame = {
       name: e.target.parentElement.dataset.name,
@@ -150,15 +155,17 @@ export default function Dashboard() {
                   key={result.id}
                   onList={true}
                   remove={true}
-                  listFunction={() => { console.log('Remove game clicked on search screen') }}
+                  list={usersGames}
+                  session={session}
                   result={result}
                 ></GameCard>
               ) : (
                 <GameCard
                   key={result.id}
                   onList={false}
+                  session={session}
                   add={true}
-                  listFunction={addGame}
+                  usersGames={usersGames}
                   result={result}
                 ></GameCard>
               )
