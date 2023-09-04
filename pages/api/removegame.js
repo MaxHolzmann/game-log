@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     try {
       await connectMongo(process.env.MONGODB_URI);
       const deletedGame = await Game.deleteOne({ name: req.body.name });
+      console.log("game removed", deletedGame);
       res.status(200).json(deletedGame);
     } catch (err) {
       console.log(err);

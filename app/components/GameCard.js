@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
 import removeGame from "../utils/removeGame";
 import addGame from "../utils/addGame";
+import fetchUsersList from "../utils/fetchUsersList";
 
 //GameCard does not need to handle List State.
 
-export default function GameCard({ session, listFunction, result, onList, add, remove, usersGames, list }) {
+export default function GameCard({
+  session,
+  listFunction,
+  result,
+  onList,
+  add,
+  remove,
+  usersGames,
+  list,
+  fromSearch,
+}) {
   let [match, setMatch] = useState(result.match);
 
   if (!remove) {
@@ -13,23 +24,16 @@ export default function GameCard({ session, listFunction, result, onList, add, r
     onList = true;
   }
 
-  const handleClick = async (e) => {
+  const addGameClick = async (e) => {
+    addGame(e, usersGames, session);
+    setMatch(true);
+    console.log("add logic is running");
+  };
 
-    if (remove === true) {
-      const newList = await removeGame(e, list, session)
-      console.log("new List", newList)
-    }
-
-    if (add === true) {
-      addGame(e, usersGames, session)
-      console.log('add logic is running')
-    }
-
-    if (match === true) {
-      setMatch(false);
-    } else {
-      setMatch(true);
-    }
+  const removeGameClick = async (e) => {
+    const newList = await removeGame(e, list, session, fromSearch);
+    setMatch(false);
+    console.log("new List", newList);
   };
 
   return (
@@ -52,14 +56,14 @@ export default function GameCard({ session, listFunction, result, onList, add, r
             {onList === true ? (
               <button
                 className='py-1 px-2 rounded-lg bg-red-600 text-white text-lg hover:scale-105 duration-100'
-                onClick={handleClick}
+                onClick={removeGameClick}
               >
                 Remove Game
               </button>
             ) : (
               <button
                 className='py-1 px-2 rounded-lg bg-green-600 text-white text-lg hover:scale-105 duration-100'
-                onClick={handleClick}
+                onClick={addGameClick}
               >
                 Add Game
               </button>

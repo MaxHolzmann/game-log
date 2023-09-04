@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../app/components/Navbar";
 import GameCard from "../app/components/GameCard";
 import fetchUsersGames from "../app/utils/fetchUsersGames";
+import fetchUsersList from "../app/utils/fetchUsersList";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -54,11 +55,6 @@ export default function Dashboard() {
     console.log("search ending", document.getElementById("search").value);
   };
 
-  const handleClick = (e) => {
-    console.log(e.target)
-    console.log('click')
-  }
-
   const addGame = async (e) => {
     const newGame = {
       name: e.target.parentElement.dataset.name,
@@ -70,7 +66,7 @@ export default function Dashboard() {
     //is this the most efficient way I can do this? look into
     for (let i = 0; i < usersGames.length; i++) {
       if (usersGames[i].name === newGame.name) {
-        console.log('already on list')
+        console.log("already on list");
         return;
       }
     }
@@ -154,10 +150,11 @@ export default function Dashboard() {
                 <GameCard
                   key={result.id}
                   onList={true}
-                  remove={true}
+                  add={false}
                   list={usersGames}
                   session={session}
                   result={result}
+                  fromSearch={true}
                 ></GameCard>
               ) : (
                 <GameCard
@@ -172,7 +169,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 }

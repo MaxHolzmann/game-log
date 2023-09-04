@@ -176,6 +176,7 @@ const DragDropList = ({ initialGamesData }) => {
                               result={item}
                               onList={true}
                               remove={true}
+                              fromSearch={false}
                             />
                           </li>
                         )}
