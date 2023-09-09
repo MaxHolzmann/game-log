@@ -9,7 +9,8 @@ import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
 
-/* FEATURE IDEAS FOR GAMES PAGE
+/* FEATURE / NOTES / IDEAS FOR GAMES PAGE
+Get rid of forceUpdate. It's a hacky solution.
 Custom lists, more than 3 lists
 Set default list for new games
 Add games to lists from search page (search page feature)
@@ -59,26 +60,28 @@ const DragDropList = ({ initialGamesData }) => {
     }
   };
 
-  //update list state
-  const removeGameList = async (e) => {
+  const removeGameUpdateList = async (e) => {
+    console.log('local remove game running', e)
     const gameName = e.target.parentElement.dataset.name;
-
+    console.log(gameName)
     for (let i = 0; i < lists.length; i++) {
       for (let j = 0; j < lists[i].items.length; j++) {
         if (gameName === lists[i].items[j].name) {
           lists[i].items.splice(j, 1);
           setLists(lists);
+          saveUsersLists(lists)
+          console.log('list updated by remove game')
         }
       }
     }
 
-    await fetchData();
-    forceUpdate();
-
+    fetchData();
+    // forceUpdate();
     //insert some type of removed game animation here. perhaps a modal in the bottom left corner?
   };
 
   const fetchData = async () => {
+    console.log('fetching started')
     if (status === "authenticated") {
       const initialGamesData = await fetchUsersGames(session.user.id);
 
@@ -105,8 +108,6 @@ const DragDropList = ({ initialGamesData }) => {
           const itemExists = allListItems.some(
             (listItem) => listItem.name === item.name
           );
-
-          // If the item with the same name does not exist in allListItems, keep it in the results array
           return !itemExists;
         });
 
@@ -114,17 +115,17 @@ const DragDropList = ({ initialGamesData }) => {
         results.forEach((item) => {
           initialListData[0].list[0].items.push(item);
         });
-        setLists(initialListData[0].list);
+        setLists(initialListData[0].list)
       } else {
         setLists([
           {
             id: "list-1",
             title: "Back Log 📖",
-            items: itemsWithUniqueIds, // Use the items with unique IDs
+            items: itemsWithUniqueIds
           },
           { id: "list-2", title: "Currently Playing 🎮", items: [] },
           { id: "list-3", title: "Completed 🏆", items: [] },
-        ]);
+        ])
       }
     }
   };
@@ -132,6 +133,10 @@ const DragDropList = ({ initialGamesData }) => {
   useEffect(() => {
     fetchData();
   }, [session, status, ignored]);
+
+  useEffect(() => {
+    console.log('list updated')
+  }, [lists])
 
   if (status === "loading") {
     return <p>Loading!</p>;
@@ -167,7 +172,7 @@ const DragDropList = ({ initialGamesData }) => {
                               ...provided.draggableProps.style,
                             }}
                             className='flex justify-center m-4 p-1'
-                            onClick={removeGameList}
+                            onClick={removeGameUpdateList}
                           >
                             <GameCard
                               session={session}
