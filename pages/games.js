@@ -9,6 +9,10 @@ import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
 
+import { ReactNotifications } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import { Store } from "react-notifications-component";
+
 /* FEATURE / NOTES / IDEAS FOR GAMES PAGE
 Get rid of forceUpdate. It's a hacky solution.
 Custom lists, more than 3 lists
@@ -73,7 +77,22 @@ const DragDropList = ({ initialGamesData }) => {
     }
 
     fetchData();
+    Store.addNotification({
+      title: "Game Removed",
+      message: gameName + " was removed from your list.",
+      type: "danger",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__fadeIn"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 5000,
+        onScreen: true,
+      },
+    });
+
     forceUpdate();
+
     //insert some type of removed game animation here. perhaps a modal in the bottom left corner?
   };
 
@@ -137,6 +156,7 @@ const DragDropList = ({ initialGamesData }) => {
 
   return (
     <>
+      <ReactNotifications />
       <Navbar></Navbar>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-center bg-slate-100 rounded-2xl m-10'>
