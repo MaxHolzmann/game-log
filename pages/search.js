@@ -5,6 +5,10 @@ import GameCard from "../app/components/GameCard";
 import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 
+import { ReactNotifications } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+import { Store } from "react-notifications-component";
+
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const RAWG_KEY = process.env.NEXT_PUBLIC_RAWG_KEY;
@@ -55,35 +59,24 @@ export default function Dashboard() {
     console.log("search ending", document.getElementById("search").value);
   };
 
-  const addGame = async (e) => {
-    const newGame = {
-      name: e.target.parentElement.dataset.name,
-      background_image: e.target.parentElement.dataset.img,
-      position: 1,
-      category: "test",
-      user: session.user.id,
-    };
-    //is this the most efficient way I can do this? look into
-    for (let i = 0; i < usersGames.length; i++) {
-      if (usersGames[i].name === newGame.name) {
-        console.log("already on list");
-        return;
-      }
-    }
-    try {
-      const response = await fetch("/api/game", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+  const addGameNotification = (e) => {
+    const gameName = e.target.parentElement.dataset.name;
+    if (e.target.tagName === "BUTTON") {
+      Store.addNotification({
+        title: "Game Added",
+        message: gameName + " was added to your list!",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 5000,
+          onScreen: true,
         },
-        body: JSON.stringify(newGame),
       });
-      console.log("added game:", response);
-      await fetchUsersGames();
-    } catch (err) {
-      console.log(err);
     }
-  };
+  }
 
   const fetchUsersGames = async () => {
     if (status === "authenticated") {
@@ -123,6 +116,7 @@ export default function Dashboard() {
 
   return (
     <>
+      <ReactNotifications />
       <Navbar></Navbar>
       <div className='flex flex-col items-center justify-center min-h-screen py-2'>
         <div className='text-center'>
@@ -144,7 +138,7 @@ export default function Dashboard() {
             </button>
           </form>
 
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
+          <div onClick={addGameNotification} className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
             {results.map((result) =>
               result.match === true ? (
                 <GameCard

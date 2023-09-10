@@ -9,6 +9,7 @@ import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
 
+//notification features / styling
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Store } from "react-notifications-component";
