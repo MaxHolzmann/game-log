@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import removeGame from "../utils/removeGame";
 import addGame from "../utils/addGame";
 import fetchUsersList from "../utils/fetchUsersList";
+import fetchUsersGames from "../utils/fetchUsersGames";
 
 //GameCard does not need to handle List State.
 
@@ -25,7 +26,8 @@ export default function GameCard({
   }
 
   const addGameClick = async (e) => {
-    addGame(e, usersGames, session);
+    const usersVideoGames = await fetchUsersGames(session.user.id);
+    addGame(e, usersVideoGames, session);
     setMatch(true);
     console.log("add logic is running");
   };

@@ -34,7 +34,7 @@ const removeGame = async (e, listDisplay, session, fromSearch) => {
         } catch (err) {
             console.log(err);
         }
-    } else {
+    } else if (fromSearch === false) {
         // lets check if coming from search page and treat it slightly different if it is. we don't need to loop through lists, just use the fetchUserGames similar to how the search finds matches for the GameCard state.
 
         for (let i = 0; i < listDisplay.length; i++) {
