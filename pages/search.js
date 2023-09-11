@@ -2,9 +2,6 @@ import { useSession, signIn, signOut, getSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Navbar from "../app/components/Navbar";
 import GameCard from "../app/components/GameCard";
-import fetchUsersGames from "../app/utils/fetchUsersGames";
-import fetchUsersList from "../app/utils/fetchUsersList";
-
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Store } from "react-notifications-component";
@@ -51,12 +48,10 @@ export default function Dashboard() {
   };
 
   const updateSearch = (e) => {
-    console.log("updated search started");
     if (e) {
       e.preventDefault();
     }
     setSearch(document.getElementById("search").value);
-    console.log("search ending", document.getElementById("search").value);
   };
 
   const addGameNotification = (e) => {

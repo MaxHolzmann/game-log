@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import removeGame from "../utils/removeGame";
 import addGame from "../utils/addGame";
-import fetchUsersList from "../utils/fetchUsersList";
 import fetchUsersGames from "../utils/fetchUsersGames";
 
 //GameCard does not need to handle List State.

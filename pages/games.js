@@ -8,8 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 import fetchUsersGames from "../app/utils/fetchUsersGames";
 import fetchUsersList from "../app/utils/fetchUsersList";
 import saveUsersLists from "../app/utils/saveUsersLists";
-
-//notification features / styling
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Store } from "react-notifications-component";
@@ -91,10 +89,7 @@ const DragDropList = ({ initialGamesData }) => {
         onScreen: true,
       },
     });
-
     forceUpdate();
-
-    //insert some type of removed game animation here. perhaps a modal in the bottom left corner?
   };
 
   const fetchData = async () => {
