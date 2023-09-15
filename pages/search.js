@@ -150,7 +150,7 @@ export default function Dashboard() {
             </button>
           </form>
 
-          <div onClick={addGameNotification} className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 content-center m-5'>
+          <div onClick={addGameNotification} className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 content-center m-5'>
             {results.map((result) =>
               result.match === true ? (
                 <GameCard
