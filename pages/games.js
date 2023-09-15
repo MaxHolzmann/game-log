@@ -164,7 +164,7 @@ const DragDropList = ({ initialGamesData }) => {
                   <ul
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className='bg-slate-200 m-3 rounded-2xl grid xl:grid-cols-2 justify-items-center max-h-screen overflow-y-scroll'
+                    className="bg-slate-200 m-3 rounded-2xl flex flex-col justify-center xl:grid xl:grid-cols-2"
                   >
                     {list.items.map((item, itemIndex) => (
                       <Draggable
@@ -180,7 +180,7 @@ const DragDropList = ({ initialGamesData }) => {
                             style={{
                               ...provided.draggableProps.style,
                             }}
-                            className='flex justify-center m-4 p-1'
+                            className='flex justify-center p-3'
                             onClick={removeGameUpdateList}
                           >
                             <GameCard
@@ -200,6 +200,7 @@ const DragDropList = ({ initialGamesData }) => {
                   </ul>
                 )}
               </Droppable>
+
             </div>
           ))}
         </div>
