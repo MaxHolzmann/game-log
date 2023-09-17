@@ -50,6 +50,11 @@ export default function Dashboard() {
   const updateSearch = (e) => {
     if (e) {
       e.preventDefault();
+      const resultsDisplay = document.getElementById("resultsGrid");
+      setTimeout(() => {
+        resultsDisplay.className =
+          "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 content-center m-5 rounded-2xl mx-20 bg-slate-200 p-10 shadow-md";
+      }, 750);
     }
     setSearch(document.getElementById("search").value);
   };
@@ -71,7 +76,6 @@ export default function Dashboard() {
             onScreen: true,
           },
         });
-
       } else if (e.target.textContent === "Add Game") {
         Store.addNotification({
           title: "Game Added",
@@ -88,7 +92,7 @@ export default function Dashboard() {
         });
       }
     }
-  }
+  };
 
   const fetchUsersGames = async () => {
     if (status === "authenticated") {
@@ -150,7 +154,11 @@ export default function Dashboard() {
             </button>
           </form>
 
-          <div onClick={addGameNotification} className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 content-center m-5'>
+          <div
+            id='resultsGrid'
+            onClick={addGameNotification}
+            className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 content-center m-5'
+          >
             {results.map((result) =>
               result.match === true ? (
                 <GameCard

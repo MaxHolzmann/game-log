@@ -24,7 +24,21 @@ export default function Profile() {
   return (
     <>
       <Navbar></Navbar>
-      <h1>My Profile</h1>
+      <div className='flex flex-col items-center mt-10'>
+        <div className='flex shadow-lg flex-col items-center w-50 rounded-2xl bg-slate-200 p-4'>
+          <img
+            className='rounded-full h-40 w-40 m-1'
+            src={session.user.image}
+            alt='Profile Picture'
+          />
+          <h1 className='text-2xl text-gray-600'>{session.user.email}</h1>
+          <h1 className='text-xl text-gray-600'>{session.user.name}</h1>
+        </div>
+
+        <h1 className='text-2xl mt-5'>
+          At this time, you can not currently edit your profile information.
+        </h1>
+      </div>
     </>
   );
 }
