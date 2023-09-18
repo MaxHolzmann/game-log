@@ -27,7 +27,7 @@ export default function Hero() {
                         }}
                     />
                 </div>
-                <div className="mx-auto max-w-2xl py-16 sm:py-16 lg:pb-72">
+                <div className="mx-auto max-w-2xl py-16 sm:py-16 lg:pb-52">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold tracking-tight text-white drop-shadow-2xl sm:text-6xl py-12">
                             Keep track of your gaming backlog

@@ -15,6 +15,7 @@ export default function Description() {
                     <li>Steam API integration for game library importing.</li>
                     <li>Native login system.</li>
                 </ul>
+                <p className="text-lg pt-8 pb-2">Created by Maximilian Holzmann, you can find my GitHub <a href="https://github.com/MaxHolzmann" target="_blank">here</a></p>
             </div>
         </>
     )
