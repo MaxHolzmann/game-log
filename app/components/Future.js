@@ -1,6 +1,4 @@
 export default function Description() {
-    const { data: session, status } = useSession();
-
     return (
         <>
             <div className="text-center bg-slate-800 text-white pt-4">
