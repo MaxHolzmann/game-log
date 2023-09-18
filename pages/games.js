@@ -11,6 +11,7 @@ import saveUsersLists from "../app/utils/saveUsersLists";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Store } from "react-notifications-component";
+import Loading from "../app/components/Loading";
 
 /* FEATURE / NOTES / IDEAS FOR GAMES PAGE
 Get rid of forceUpdate. It's a hacky solution.
@@ -147,7 +148,7 @@ const DragDropList = ({ initialGamesData }) => {
   }, [session, status, ignored]);
 
   if (status === "loading") {
-    return <p>Loading!</p>;
+    return <Loading></Loading>
   }
 
   return (

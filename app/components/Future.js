@@ -1,6 +1,3 @@
-import { useSession, signIn, signOut } from "next-auth/react";
-
-
 export default function Description() {
     const { data: session, status } = useSession();
 

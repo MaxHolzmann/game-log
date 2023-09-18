@@ -5,6 +5,7 @@ import GameCard from "../app/components/GameCard";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { Store } from "react-notifications-component";
+import Loading from "../app/components/Loading";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -127,7 +128,7 @@ export default function Dashboard() {
   }, [results]);
 
   if (status === "loading") {
-    return <p>Loading!</p>;
+    return <Loading></Loading>
   }
 
   return (

@@ -1,5 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Navbar from "../app/components/Navbar";
+import Loading from "../app/components/Loading";
 
 //cloudinary for profile pictures
 
@@ -7,7 +8,7 @@ export default function Profile() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <h1>Loading...</h1>;
+    return <Loading></Loading>
   }
 
   if (status === "unauthenticated") {
