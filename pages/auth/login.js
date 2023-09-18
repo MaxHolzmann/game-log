@@ -12,6 +12,10 @@ export default function SignIn() {
     <>
       <div className='flex justify-center my-40 mx-5'>
         <div className='shadow-md border rounded-xl flex flex-col justify-items-center text-center p-8'>
+          <p className='text-center mb-10'>
+            The Login feature is not yet finished, please utilize a third party
+            authentication to login for now. Thank you!
+          </p>
           <h1 className='text-3xl mb-4'>Login</h1>
 
           <form>
@@ -36,7 +40,7 @@ export default function SignIn() {
               placeholder='Password'
             />
             <button
-              className='shadow border p-2 rounded-lg my-3 mx-2'
+              className='shadow border py-2 px-4 rounded-lg my-3 mx-2'
               type='submit'
             >
               Login
@@ -46,7 +50,7 @@ export default function SignIn() {
           <hr className='m-3'></hr>
 
           {Object.values(providers).map((provider) => (
-            <div key={provider.name}>
+            <div className='flex justify-center' key={provider.name}>
               {provider.name === "Google" ? (
                 <>
                   <div className='px-6 sm:px-0 max-w-sm'>
