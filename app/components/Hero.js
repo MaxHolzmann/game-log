@@ -5,7 +5,7 @@ export default function Hero() {
     const { data: session, status } = useSession();
 
     return (
-        <div className="bg-orange-500">
+        <div>
             <header className="absolute inset-x-0 top-0 z-50">
             </header>
 
@@ -32,19 +32,18 @@ export default function Hero() {
                         <h1 className="text-4xl font-bold tracking-tight text-white drop-shadow-2xl sm:text-6xl py-12">
                             Keep track of your gaming backlog
                         </h1>
-                        <p className="mt-6 text-lg leading-8 text-gray-200 drop-shadow-md">
-                            Always unsure of what to play next? Game-Log helps you determine your next gaming adventure by keeping you organized.
+                        <p className="mt-6 text-lg leading-8 text-gray-100 drop-shadow-md">
+                            Always unsure of what to play next? Game Log helps you determine your next gaming adventure by keeping you organized.
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-x-6">
-                            {/* GET SESSION HERE, display PROFILE if logged in.*/}
                             {status === "authenticated" ? (<a
                                 href="/profile"
-                                className="rounded-md bg-slate-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                                className="rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                             >
                                 View your profile
                             </a>) : (<a
                                 href="/auth/login"
-                                className="rounded-md bg-slate-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                                className="rounded-md bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                             >
                                 Get started
                             </a>)}
