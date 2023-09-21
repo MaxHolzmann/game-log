@@ -4,6 +4,7 @@ export default function Hero() {
   const { data: session, status } = useSession();
 
   return (
+    //redesign this whole thing
     <div>
       <header className='absolute inset-x-0 top-0 z-50'></header>
 
