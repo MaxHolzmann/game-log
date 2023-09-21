@@ -5,10 +5,10 @@ import Future from "../app/components/Future";
 
 export default function Home() {
   return (
-    <>
+    <div className='overflow-hidden'>
       <Hero></Hero>
       <Description></Description>
       <Future></Future>
-    </>
+    </div>
   );
 }
