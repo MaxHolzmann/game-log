@@ -10,7 +10,7 @@ export default function Navbar() {
   */
 
   return (
-    <div className='text-center font-semibold flex justify-center gap-6 text-slate-800 text-lg p-2 px-3'>
+    <div className='text-center items-center font-semibold flex justify-center gap-6 text-slate-800 text-lg p-2 px-3'>
       {session ? (
         <>
           <h1>

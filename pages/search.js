@@ -128,7 +128,7 @@ export default function Dashboard() {
   }, [results]);
 
   if (status === "loading") {
-    return <Loading></Loading>
+    return <Loading></Loading>;
   }
 
   return (
@@ -149,7 +149,7 @@ export default function Dashboard() {
             <button
               onClick={updateSearch}
               type='submit'
-              className='mx-4 shadow-md text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800'
+              className='my-4 md:my-0 mx-4 shadow-md text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800'
             >
               Search
             </button>
@@ -158,7 +158,7 @@ export default function Dashboard() {
           <div
             id='resultsGrid'
             onClick={addGameNotification}
-            className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 content-center m-5'
+            className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 place-items-center content-center m-5'
           >
             {results.map((result) =>
               result.match === true ? (
