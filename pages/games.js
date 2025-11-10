@@ -106,9 +106,7 @@ const DragDropList = ({ initialGamesData }) => {
       const initialListData = await fetchUsersList(session.user.id);
 
       if (initialListData.length !== 0) {
-        // compare items with unique ids to inital list, when no match, add to the first items array
         const allListItems = [];
-
         for (let i = 0; i < initialListData[0].list.length; i++) {
           for (let j = 0; j < initialListData[0].list[i].items.length; j++) {
             let list = initialListData[0].list[i].items[j];
@@ -116,7 +114,6 @@ const DragDropList = ({ initialGamesData }) => {
           }
         }
         const results = itemsWithUniqueIds.filter((item) => {
-          // Check if an item with the same name exists in allListItems
           const itemExists = allListItems.some(
             (listItem) => listItem.name === item.name
           );
@@ -148,7 +145,7 @@ const DragDropList = ({ initialGamesData }) => {
   }, [session, status, ignored]);
 
   if (status === "loading") {
-    return <Loading></Loading>
+    return <Loading></Loading>;
   }
 
   return (
@@ -156,10 +153,10 @@ const DragDropList = ({ initialGamesData }) => {
       <ReactNotifications />
       <Navbar></Navbar>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-center bg-slate-100 rounded-2xl m-10'>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center bg-slate-100 rounded-2xl m-10">
           {lists.map((list, index) => (
             <div key={list.id}>
-              <h2 className='text-2xl mt-5'>{list.title}</h2>
+              <h2 className="text-2xl mt-5">{list.title}</h2>
               <Droppable droppableId={list.id} index={index}>
                 {(provided) => (
                   <ul
@@ -181,7 +178,7 @@ const DragDropList = ({ initialGamesData }) => {
                             style={{
                               ...provided.draggableProps.style,
                             }}
-                            className='flex justify-center p-3'
+                            className="flex justify-center p-3"
                             onClick={removeGameUpdateList}
                           >
                             <GameCard
@@ -201,7 +198,6 @@ const DragDropList = ({ initialGamesData }) => {
                   </ul>
                 )}
               </Droppable>
-
             </div>
           ))}
         </div>
